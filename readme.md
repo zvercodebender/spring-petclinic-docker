@@ -70,5 +70,5 @@ Or you can run it from Maven directly using the Spring Boot Maven plugin. If you
 ## References
 
 - [Building PetClinic app using Dockerfile](https://docs.docker.com/language/java/build-images/)
-- 
+
 
