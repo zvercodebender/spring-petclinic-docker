@@ -15,7 +15,7 @@ services:
       - ./:/app
     
   mysqlserver:
-    image: mysql:8.0.23
+    image: mysql:8
     ports:
       - 3306:3306
     environment:
