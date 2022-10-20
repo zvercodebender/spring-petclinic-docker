@@ -3,7 +3,7 @@ services:
   petclinic:
     build:
       context: .
-      dockerfile: Dockerfile-multi
+      dockerfile: Dockerfile.multi
       target: development
     ports:
       - 8000:8000
