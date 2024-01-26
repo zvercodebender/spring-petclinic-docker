@@ -12,5 +12,5 @@ jobs:
         name: Say hello
         kind: build
         shell: sh
-        run: |2
-           docker build -t rbroker/petclinic-app:latest . -f Dockerfile
+        run: | 
+          echo "Hello World"
