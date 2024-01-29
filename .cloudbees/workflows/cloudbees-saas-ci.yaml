@@ -6,12 +6,31 @@ on:
     branches:
       - "**"
 jobs:
-  build:
+  build-and-publish:
     steps:
-      - uses: docker://golang:1.20.3-alpine3.17
-        name: Say hello
-        kind: build
+      - name: Checkout
+        uses: cloudbees-io/checkout@v1
+
+      - name: Build JAR
+        uses: docker://maven:3.9.6-eclipse-temurin-17
         shell: sh
-        run: | 
-          echo "Hello World"
-          
+        run: |
+          mvn clean compile
+
+      - id: dockerconfig
+        name: Configure container registry credentials
+        uses: cloudbees-io/configure-oci-credentials@v1
+        with:
+          registry: ${{ vars.DOCKER_REGISTRY }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build a container image with Kaniko
+        uses: cloudbees-io/kaniko@v1
+        with:
+          dockerfile: Dockerfile
+          context: .
+          destination: rbroker/petclinic-app:1.0.0,rbroker/petclinic-app:latest
+          build-args: BUILDKIT_CONTEXT_KEEP_GIT_DIR=1,BUILDKIT_INLINE_CACHE=1
+          labels: maintainer=John Smith,version=1.0.1
+
