@@ -12,7 +12,7 @@ jobs:
         uses: cloudbees-io/checkout@v1
 
 
-      - name: Start CDRO Pipeline
+      - name: Show TAG
         uses: docker://fedora:39
         shell: sh
         run: |
@@ -44,7 +44,7 @@ jobs:
         uses: docker://fedora:39
         shell: sh
         run: |
-          curl -k -X POST "${{vars.CB_FLOW}}/rest/v1.0/releases?projectName=MyProject&releaseName=Petclinic" \
+          curl -k -X POST "${{vars.CB_FLOW}}/rest/v1.0/releases?projectName=MyProject&releaseName=Petclinic-Release" \
           -u ${{secrets.CB_USER}}:${{secrets.CB_PASSWD}} \
           -H "accept: application/json" \
           -d "{\"pipelineParameter\":[{\"pipelineParameterName\":\"appVersion\",\"value\":\"${{vars.TAG}}\"}]}"
