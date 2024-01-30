@@ -32,3 +32,12 @@ jobs:
           context: .
           destination: rbroker/petclinic-app:1.0.0,rbroker/petclinic-app:latest
           build-args: BUILDKIT_CONTEXT_KEEP_GIT_DIR=1,BUILDKIT_INLINE_CACHE=1
+
+      - name: Start CDRO Pipeline
+        uses: docker://fedora:39
+        shell: sh
+        run: |
+          curl -k -X POST "${{vars.CB_FLOW}}/rest/v1.0/releases?projectName=MyProject&releaseName=Petclinic" \
+          -u ${{secrets.CB_USER}}:${{secrets.CB_PASSWD}} \
+          -H "accept: application/json" \
+          -d "{\"pipelineParameter\":[{\"pipelineParameterName\":\"appVersion\",\"value\":\"${{vars.TAG}}\"}]}"
