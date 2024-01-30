@@ -11,6 +11,13 @@ jobs:
       - name: Checkout
         uses: cloudbees-io/checkout@v1
 
+
+      - name: Start CDRO Pipeline
+        uses: docker://fedora:39
+        shell: sh
+        run: |
+          echo "Working on tag ${{vars.TAG}}"
+
       - name: Build JAR
         uses: docker://maven:3.9.6-eclipse-temurin-17
         shell: sh
