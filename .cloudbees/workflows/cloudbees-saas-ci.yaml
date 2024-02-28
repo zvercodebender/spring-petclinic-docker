@@ -17,6 +17,7 @@ jobs:
         uses: docker://fedora:39
         shell: sh
         run: |
+          dnf install -y git
           DATE=`date '+%Y%m%d%H%M%S'`
           HASH=`git rev-parse --short HEAD`
           echo "${DATE}.${HASH}"
