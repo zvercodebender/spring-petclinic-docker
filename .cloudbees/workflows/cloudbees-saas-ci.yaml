@@ -17,19 +17,11 @@ jobs:
         uses: docker://fedora:39
         shell: sh
         run: |
-          dnf install -y git
+          dnf install -y git > /dev/null
           DATE=`date '+%y%m%d'`
           HASH=`git rev-parse --short HEAD`
           echo "Working on tag ~${DATE}.${HASH}~"
           echo -n "${DATE}.${HASH}" >> "$CLOUDBEES_OUTPUTS/version_tag" 
-
-      - name: Get Version
-        uses: docker://fedora:39
-        shell: sh
-        run: |
-          echo "======"
-          echo "Working on tag ~${{ steps.set-tag.outputs.version_tag }}~"
-          echo "======"
 
       - name: Build JAR
         uses: docker://maven:3.9.6-eclipse-temurin-17
