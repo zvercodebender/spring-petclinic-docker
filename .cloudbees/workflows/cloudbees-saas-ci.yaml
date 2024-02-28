@@ -17,9 +17,11 @@ jobs:
         uses: docker://fedora:39
         shell: sh
         run: |
+          dnf install -y git
           DATE=`date '+%Y%m%d%H%M%S'`
-          echo "${DATE}.${{ cloudbees.sha }}"
-          echo "${DATE}.${{ cloudbees.sha }}" >> "$CLOUDBEES_OUTPUT/VERSION_TAG" 
+          HASH=`git rev-parse --short HEAD`
+          echo "${DATE}.${HASH}"
+          echo "${DATE}.${HASH}" >> "$CLOUDBEES_OUTPUT/VERSION_TAG" 
           echo "Working on tag ${{vars.TAG}}"
 
       - name: Build JAR
