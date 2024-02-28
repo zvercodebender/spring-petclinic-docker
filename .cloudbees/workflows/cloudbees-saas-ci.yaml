@@ -21,7 +21,7 @@ jobs:
           DATE=`date '+%Y%m%d%H%M%S'`
           HASH=`git rev-parse --short HEAD`
           echo "${DATE}.${HASH}"
-          echo "${DATE}.${HASH}" >> "$CLOUDBEES_OUTPUT/version_tag" 
+          echo "${DATE}.${HASH}" >> "$CLOUDBEES_OUTPUTS/version_tag" 
           echo "Working on tag ${{vars.TAG}}"
 
       - name: Get Version
