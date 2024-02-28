@@ -24,12 +24,17 @@ jobs:
           echo "${DATE}.${HASH}" >> "$CLOUDBEES_OUTPUT/VERSION_TAG" 
           echo "Working on tag ${{vars.TAG}}"
 
+      - name: Get Version
+        uses: docker://fedora:39
+        shell: sh
+        run: |
+          echo "Building Version: ${{steps.set-tag.outputs.VERSION_TAG}}"
+
       - name: Build JAR
         uses: docker://maven:3.9.6-eclipse-temurin-17
         shell: sh
         run: |
           mvn clean compile
-          echo "Building Version: ${{steps.set-tag.outputs.VERSION_TAG}}"
 
       - id: dockerconfig
         name: Configure container registry credentials
