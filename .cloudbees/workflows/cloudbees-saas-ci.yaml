@@ -21,7 +21,7 @@ jobs:
           DATE=`date '+%y%m%d'`
           HASH=`git rev-parse --short HEAD`
           echo "Working on tag ~${DATE}.${HASH}~"
-          ${DATE}.${HASH} > "$CLOUDBEES_OUTPUTS/version_tag" 
+          echo -n "${DATE}.${HASH}" > "$CLOUDBEES_OUTPUTS/version_tag" 
 
       - name: Get Version
         uses: docker://fedora:39
