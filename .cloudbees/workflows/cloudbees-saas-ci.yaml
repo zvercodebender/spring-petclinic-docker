@@ -28,8 +28,8 @@ jobs:
         uses: docker://maven:3.9.6-eclipse-temurin-17
         shell: sh
         run: |
-          echo "Building Version: ${{steps.set-tag.outputs.VERSION_TAG}}"
           mvn clean compile
+          echo "Building Version: ${{steps.set-tag.outputs.VERSION_TAG}}"
 
       - id: dockerconfig
         name: Configure container registry credentials
