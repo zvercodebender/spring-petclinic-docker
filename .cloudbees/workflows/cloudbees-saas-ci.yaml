@@ -23,6 +23,12 @@ jobs:
           echo "Working on tag ${DATE}.${HASH}"
           echo "${DATE}.${HASH}" >> "$CLOUDBEES_OUTPUTS/version_tag" 
 
+      - name: Get Version
+        uses: docker://fedora:39
+        shell: sh
+        run: |
+          echo "Working on tag ${{ steps.set-tag.outputs.version_tag }}"
+
       - name: Build JAR
         uses: docker://maven:3.9.6-eclipse-temurin-17
         shell: sh
