@@ -13,22 +13,20 @@ jobs:
 
 
       - name: Show TAG
-        id: setTag
+        id: set-tag
         uses: docker://fedora:39
         shell: sh
         run: |
-          dnf install -y git
           DATE=`date '+%Y%m%d%H%M%S'`
-          HASH=`git rev-parse --short HEAD`
-          echo "${DATE}.${HASH}"
-          echo "${DATE}.${HASH}" >> "$CLOUDBEES_OUTPUT/VERSION_TAG" 
+          echo "${DATE}.${{ cloudbees.sha }}"
+          echo "${DATE}.${{ cloudbees.sha }}" >> "$CLOUDBEES_OUTPUT/VERSION_TAG" 
           echo "Working on tag ${{vars.TAG}}"
 
       - name: Build JAR
         uses: docker://maven:3.9.6-eclipse-temurin-17
         shell: sh
         run: |
-          echo "Building Version: ${{steps.setTag.outputs.VERSION_TAG}}"
+          echo "Building Version: ${{steps.set-tag.outputs.VERSION_TAG}}"
           mvn clean compile
 
       - id: dockerconfig
