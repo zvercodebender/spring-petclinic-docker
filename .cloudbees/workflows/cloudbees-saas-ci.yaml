@@ -28,6 +28,7 @@ jobs:
         uses: docker://maven:3.9.6-eclipse-temurin-17
         shell: sh
         run: |
+          echo "Building Version: ${{steps.setTag.outputs.VERSION_TAG}}"
           mvn clean compile
 
       - id: dockerconfig
@@ -43,7 +44,7 @@ jobs:
         with:
           dockerfile: Dockerfile
           context: .
-          destination: rbroker/petclinic-app:${{steps.setTag.outputs.VERSION_TAG}},rbroker/petclinic-app:latest
+          destination: rbroker/petclinic-app:1.0.0,rbroker/petclinic-app:latest
           build-args: BUILDKIT_CONTEXT_KEEP_GIT_DIR=1,BUILDKIT_INLINE_CACHE=1
 
       # - name: Start CDRO Pipeline
