@@ -20,15 +20,8 @@ jobs:
           dnf install -y git
           DATE=`date '+%Y%m%d%H%M%S'`
           HASH=`git rev-parse --short HEAD`
-          echo "${DATE}.${HASH}"
+          echo "Working on tag ${DATE}.${HASH}"
           echo "${DATE}.${HASH}" >> "$CLOUDBEES_OUTPUTS/version_tag" 
-          echo "Working on tag ${{vars.TAG}}"
-
-      - name: Get Version
-        uses: docker://fedora:39
-        shell: sh
-        run: |
-          echo ${{ steps.set-tag.outputs.version_tag }}
 
       - name: Build JAR
         uses: docker://maven:3.9.6-eclipse-temurin-17
@@ -49,7 +42,7 @@ jobs:
         with:
           dockerfile: Dockerfile
           context: .
-          destination: rbroker/petclinic-app:1.0.0,rbroker/petclinic-app:latest
+          destination: rbroker/petclinic-app:${{ steps.set-tag.outputs.version_tag }},rbroker/petclinic-app:latest
           build-args: BUILDKIT_CONTEXT_KEEP_GIT_DIR=1,BUILDKIT_INLINE_CACHE=1
 
       # - name: Start CDRO Pipeline
