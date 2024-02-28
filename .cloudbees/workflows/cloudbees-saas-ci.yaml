@@ -13,9 +13,14 @@ jobs:
 
 
       - name: Show TAG
+        id: setTag
         uses: docker://fedora:39
         shell: sh
         run: |
+          DATE=`date '+%Y%m%d%H%M%S'`
+          HASH=`git rev-parse --short HEAD`
+          echo "${DATE}.${HASH}"
+          echo "${DATE}.${HASH}" >> "$CLOUDBEES_OUTPUT/VERSION_TAG" 
           echo "Working on tag ${{vars.TAG}}"
 
       - name: Build JAR
@@ -37,14 +42,14 @@ jobs:
         with:
           dockerfile: Dockerfile
           context: .
-          destination: rbroker/petclinic-app:1.0.0,rbroker/petclinic-app:latest
+          destination: rbroker/petclinic-app:${{steps.setTag.outputs.VARVERSION_TAGNAME}},rbroker/petclinic-app:latest
           build-args: BUILDKIT_CONTEXT_KEEP_GIT_DIR=1,BUILDKIT_INLINE_CACHE=1
 
-      - name: Start CDRO Pipeline
-        uses: docker://fedora:39
-        shell: sh
-        run: |
-          curl -k -X POST "${{vars.CB_FLOW}}/rest/v1.0/releases?projectName=MyProject&releaseName=Petclinic-Release" \
-          -u ${{secrets.CB_USER}}:${{secrets.CB_PASSWD}} \
-          -H "accept: application/json" \
-          -d "{\"pipelineParameter\":[{\"pipelineParameterName\":\"appVersion\",\"value\":\"${{vars.TAG}}\"}]}"
+      # - name: Start CDRO Pipeline
+      #   uses: docker://fedora:39
+      #   shell: sh
+      #   run: |
+      #     curl -k -X POST "${{vars.CB_FLOW}}/rest/v1.0/releases?projectName=MyProject&releaseName=Petclinic-Release" \
+      #     -u ${{secrets.CB_USER}}:${{secrets.CB_PASSWD}} \
+      #     -H "accept: application/json" \
+      #     -d "{\"pipelineParameter\":[{\"pipelineParameterName\":\"appVersion\",\"value\":\"${{steps.setTag.outputs.VARVERSION_TAGNAME}}}\"}]}"
