@@ -12,7 +12,7 @@ jobs:
         uses: cloudbees-io/checkout@v1
 
 
-      - name: Show TAG
+      - name: Set Version
         id: set-tag
         uses: docker://fedora:39
         shell: sh
@@ -21,14 +21,14 @@ jobs:
           DATE=`date '+%Y%m%d%H%M%S'`
           HASH=`git rev-parse --short HEAD`
           echo "${DATE}.${HASH}"
-          echo "${DATE}.${HASH}" >> "$CLOUDBEES_OUTPUT/VERSION_TAG" 
+          echo "${DATE}.${HASH}" >> "$CLOUDBEES_OUTPUT/version_tag" 
           echo "Working on tag ${{vars.TAG}}"
 
       - name: Get Version
         uses: docker://fedora:39
         shell: sh
         run: |
-          echo "Building Version: ${{steps.set-tag.outputs.VERSION_TAG}}"
+          echo ${{ steps.set-tag.outputs.version_tag }}
 
       - name: Build JAR
         uses: docker://maven:3.9.6-eclipse-temurin-17
