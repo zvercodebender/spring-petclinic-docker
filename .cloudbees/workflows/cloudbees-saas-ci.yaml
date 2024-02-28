@@ -21,13 +21,15 @@ jobs:
           DATE=`date '+%y%m%d'`
           HASH=`git rev-parse --short HEAD`
           echo "Working on tag ~${DATE}.${HASH}~"
-          echo -n "${DATE}.${HASH}" > "$CLOUDBEES_OUTPUTS/version_tag" 
+          echo -n "${DATE}.${HASH}" >> "$CLOUDBEES_OUTPUTS/version_tag" 
 
       - name: Get Version
         uses: docker://fedora:39
         shell: sh
         run: |
+          echo "======"
           echo "Working on tag ~${{ steps.set-tag.outputs.version_tag }}~"
+          echo "======"
 
       - name: Build JAR
         uses: docker://maven:3.9.6-eclipse-temurin-17
@@ -58,4 +60,4 @@ jobs:
       #     curl -k -X POST "${{vars.CB_FLOW}}/rest/v1.0/releases?projectName=MyProject&releaseName=Petclinic-Release" \
       #     -u ${{secrets.CB_USER}}:${{secrets.CB_PASSWD}} \
       #     -H "accept: application/json" \
-      #     -d "{\"pipelineParameter\":[{\"pipelineParameterName\":\"appVersion\",\"value\":\"${{steps.setTag.outputs.VARVERSION_TAGNAME}}}\"}]}"
+      #     -d "{\"pipelineParameter\":[{\"pipelineParameterName\":\"appVersion\",\"value\":\"${{steps.setTag.outputs.version_tag}}}\"}]}"
