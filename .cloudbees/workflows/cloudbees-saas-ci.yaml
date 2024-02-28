@@ -52,4 +52,4 @@ jobs:
           curl -k -X POST "${{vars.CB_FLOW}}/rest/v1.0/releases?projectName=MyProject&releaseName=Petclinic-Release" \
           -u ${{secrets.CB_USER}}:${{secrets.CB_PASSWD}} \
           -H "accept: application/json" \
-          -d "{\"pipelineParameter\":[{\"pipelineParameterName\":\"appVersion\",\"value\":\"${{steps.setTag.outputs.version_tag}}\"}]}"
+          -d "{\"pipelineParameter\":[{\"pipelineParameterName\":\"appVersion\",\"value\":\"${{steps.set-tag.outputs.version_tag}}\"}]}"
