@@ -46,7 +46,7 @@ jobs:
           build-args: BUILDKIT_CONTEXT_KEEP_GIT_DIR=1,BUILDKIT_INLINE_CACHE=1
 
       - name: Start CDRO Pipeline
-        uses: zvercodebender/cdro-action@v0.1
+        uses: zvercodebender/cdro-action@v0.2
         with:
           url: ${{vars.CB_FLOW}}
           username: ${{secrets.CB_USER}}
