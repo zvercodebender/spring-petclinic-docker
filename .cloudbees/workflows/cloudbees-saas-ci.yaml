@@ -54,5 +54,4 @@ jobs:
           project-name: MyProject
           release-name: Petclinic-Release
           parameters: '{\"pipelineParameter\":[{\"pipelineParameterName\":\"appVersion\",\"value\":\"${{steps.set-tag.outputs.version_tag}}\"}]}'
-
-# End               
+              
