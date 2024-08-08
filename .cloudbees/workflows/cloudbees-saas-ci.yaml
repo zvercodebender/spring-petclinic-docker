@@ -30,6 +30,10 @@ jobs:
         run: |
           mvn clean compile
 
+      - name: Scan with SonarQube bundled action
+        uses: cloudbees-io/sonarqube-bundled-sast-scan-code@v1
+        kind: scan
+        
       - id: dockerconfig
         name: Configure container registry credentials
         uses: cloudbees-io/configure-oci-credentials@v1
