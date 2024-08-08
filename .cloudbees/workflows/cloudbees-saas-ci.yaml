@@ -70,7 +70,8 @@ jobs:
         uses: docker://fedora:39
         shell: sh
         run: |
-          cat /cloudbees/workspace/.scannerwork/report-task.txt>> "$CLOUDBEES_OUTPUTS/sonar_report" 
+          cat /cloudbees/workspace/.scannerwork/report-task.txt >> "$CLOUDBEES_OUTPUTS/sonar_report" 
+          cat /cloudbees/workspace/.scannerwork/report-task.txt
 
       - uses: cloudbees-io/publish-evidence-item@v1
         name: Third evidence step
@@ -78,9 +79,10 @@ jobs:
           content: |-
             # Table
             | Container |
+            |-----------|
             | rbroker/hello-py:${{steps.set-tag.outputs.version_tag}} |
 
             ```
-            ${{steps.set-tag.outputs.sonar_report}}
+            ${{steps.get-sonar-data.outputs.sonar_report}}
             ```
 
