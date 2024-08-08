@@ -65,6 +65,13 @@ jobs:
       #     release-name: Petclinic-Release
       #     parameters: '{\"pipelineParameter\":[{\"pipelineParameterName\":\"appVersion\",\"value\":\"${{steps.set-tag.outputs.version_tag}}\"}]}'
 
+      - name: Get Sonar Report
+        id: get-sonar-data
+        uses: docker://fedora:39
+        shell: sh
+        run: |
+          cat /cloudbees/workspace/.scannerwork/report-task.txt>> "$CLOUDBEES_OUTPUTS/sonar_report" 
+
       - uses: cloudbees-io/publish-evidence-item@v1
         name: Third evidence step
         with:
@@ -72,4 +79,8 @@ jobs:
             # Table
             | Container |
             | rbroker/hello-py:${{steps.set-tag.outputs.version_tag}} |
+
+            ```
+            ${{steps.set-tag.outputs.sonar_report}}
+            ```
 
