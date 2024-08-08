@@ -35,6 +35,8 @@ jobs:
         with:
           language: LANGUAGE_JAVA
           sonar-inclusion: /cloudbees/workspace/target/classes
+          threshold-critical: 0
+          log-level: DEBUG
         kind: scan
         
       - id: dockerconfig
@@ -45,21 +47,29 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build a container image with Kaniko
-        uses: cloudbees-io/kaniko@v1
-        with:
-          dockerfile: Dockerfile
-          context: .
-          destination: rbroker/petclinic-app:${{steps.set-tag.outputs.version_tag}},rbroker/petclinic-app:latest
-          build-args: BUILDKIT_CONTEXT_KEEP_GIT_DIR=1,BUILDKIT_INLINE_CACHE=1
+      # - name: Build a container image with Kaniko
+      #   uses: cloudbees-io/kaniko@v1
+      #   with:
+      #     dockerfile: Dockerfile
+      #     context: .
+      #     destination: rbroker/petclinic-app:${{steps.set-tag.outputs.version_tag}},rbroker/petclinic-app:latest
+      #     build-args: BUILDKIT_CONTEXT_KEEP_GIT_DIR=1,BUILDKIT_INLINE_CACHE=1
 
-      - name: Start CDRO Pipeline
-        uses: zvercodebender/cdro-action@v0.2
+      # - name: Start CDRO Pipeline
+      #   uses: zvercodebender/cdro-action@v0.2
+      #   with:
+      #     url: ${{vars.CB_FLOW}}
+      #     username: ${{secrets.CB_USER}}
+      #     user-token: ${{secrets.CB_PASSWD}}
+      #     project-name: MyProject
+      #     release-name: Petclinic-Release
+      #     parameters: '{\"pipelineParameter\":[{\"pipelineParameterName\":\"appVersion\",\"value\":\"${{steps.set-tag.outputs.version_tag}}\"}]}'
+
+      - uses: cloudbees-io/publish-evidence-item@v1
+        name: Third evidence step
         with:
-          url: ${{vars.CB_FLOW}}
-          username: ${{secrets.CB_USER}}
-          user-token: ${{secrets.CB_PASSWD}}
-          project-name: MyProject
-          release-name: Petclinic-Release
-          parameters: '{\"pipelineParameter\":[{\"pipelineParameterName\":\"appVersion\",\"value\":\"${{steps.set-tag.outputs.version_tag}}\"}]}'
-              
+          content: |-
+            # Table
+            | Container |
+            | rbroker/hello-py:${{steps.set-tag.outputs.version_tag}} |
+
