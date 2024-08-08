@@ -31,11 +31,12 @@ jobs:
           mvn clean compile
 
       - name: Scan with SonarQube bundled action
-        uses: cloudbees-io/sonarqube-bundled-sast-scan-code@v1
+        uses: cloudbees-io/sonarqube-bundled-sast-scan-code@v2
         with:
           language: LANGUAGE_JAVA
           sonar-inclusion: /cloudbees/workspace/target/classes
           threshold-critical: 0
+          log-level: DEBUG
         kind: scan
         
       - id: dockerconfig
