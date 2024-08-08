@@ -36,7 +36,6 @@ jobs:
           language: LANGUAGE_JAVA
           sonar-inclusion: /cloudbees/workspace/target/classes
           threshold-critical: 0
-          log-level: DEBUG
         kind: scan
         
       - id: dockerconfig
