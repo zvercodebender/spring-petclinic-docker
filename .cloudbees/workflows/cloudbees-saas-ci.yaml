@@ -66,6 +66,7 @@ jobs:
     steps:
       - uses: docker://fedora:39
         name: DEPLOY_TO_DEV
+        kind: deploy
         shell: sh
         run: |
           echo "Deploy to DEV"
