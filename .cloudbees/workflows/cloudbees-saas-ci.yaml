@@ -72,3 +72,15 @@ jobs:
           echo "Deploy to DEV"
     needs:
       - build-and-publish
+
+  deploy_to_prod:
+    environment: PROD
+    steps:
+      - uses: docker://fedora:39
+        name: DEPLOY_TO_PROD
+        kind: deploy
+        shell: sh
+        run: |
+          echo "Deploy to PROD"
+    needs:
+      - build-and-publish
