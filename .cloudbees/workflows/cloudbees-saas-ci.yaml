@@ -83,4 +83,4 @@ jobs:
         run: |
           echo "Deploy to PROD"
     needs:
-      - build-and-publish
+      - deploy_to_dev
